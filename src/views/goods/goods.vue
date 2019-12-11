@@ -2,8 +2,8 @@
   <section class="goods">
     <el-row class="mt-10 px-10">
       <el-form :inline="true" :model="formInline" class="demo-form-inline">
-        <el-form-item label="广告名称">
-          <el-input v-model="formInline.name" placeholder="广告名称"></el-input>
+        <el-form-item label="名称">
+          <el-input v-model="formInline.name" placeholder="名称"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="queryAd">查询</el-button>
@@ -55,12 +55,13 @@
       :visible.sync="dialogVisible"
       width="50%"
       center
+      class="dialog"
     >
       <el-form :model="dialogForm" ref="ruleForm" label-position="left" label-width="100px">
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="商品图片">
-              <el-input v-model="dialogForm.icon" readonly></el-input>
+              <el-input v-model="dialogForm.icon" class="display-none"></el-input>
               <el-upload
                 class="avatar-uploader"
                 :action="uploadUrl"
@@ -74,52 +75,53 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="名称" prop="name">
+            <el-form-item label="商品名称" prop="name">
               <el-input v-model="dialogForm.name"></el-input>
+            </el-form-item>
+            <el-form-item label="商品来源" prop="from">
+              <el-input v-model="dialogForm.from"></el-input>
+            </el-form-item>
+            <el-form-item label="领券" prop="ticket">
+              <el-input v-model="dialogForm.ticket"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="商品图片">
-              <el-input v-model="dialogForm.icon" readonly></el-input>
-              <el-upload
-                class="avatar-uploader"
-                :action="uploadUrl"
-                :headers="getAuthHeaders()"
-                :show-file-list="false"
-                :on-success="afterUpload"
-              >
-                <img v-if="dialogForm.icon" :src="dialogForm.icon" class="avatar">
-                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-              </el-upload>
+            <el-form-item label="现在价格" prop="nowPrice">
+              <el-input v-model="dialogForm.nowPrice"></el-input>
+            </el-form-item>
+            <el-form-item label="其他价格" prop="otherPrice">
+              <el-input v-model="dialogForm.otherPrice"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="名称" prop="name">
-              <el-input v-model="dialogForm.name"></el-input>
+            <el-form-item label="划线价格" prop="underlinePrice">
+              <el-input v-model="dialogForm.underlinePrice"></el-input>
+            </el-form-item>
+            <el-form-item label="链接" prop="url">
+              <el-input v-model="dialogForm.url"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="商品图片">
-              <el-input v-model="dialogForm.icon" readonly></el-input>
-              <el-upload
-                class="avatar-uploader"
-                :action="uploadUrl"
-                :headers="getAuthHeaders()"
-                :show-file-list="false"
-                :on-success="afterUpload"
-              >
-                <img v-if="dialogForm.icon" :src="dialogForm.icon" class="avatar">
-                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-              </el-upload>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="商品类型">
+              <el-select v-model="dialogForm.category" class="w-100">
+                <el-option
+                  v-for="item of categories"
+                  :key="item._id"
+                  :label="item.name"
+                  :value="item._id"
+                ></el-option>
+              </el-select>
             </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="名称" prop="name">
-              <el-input v-model="dialogForm.name"></el-input>
+            <el-form-item label="商品信息" prop="info">
+              <el-input
+                type="textarea"
+                :autosize="{ minRows: 3, maxRows: 5}"
+                v-model="dialogForm.info"
+              ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -142,6 +144,7 @@
     },
     data () {
       return {
+        categories: [],
         tableData: [],
         columns: [],
         formInline: {
@@ -157,7 +160,14 @@
         dialogForm: {
           name: '',
           icon: '',
-          url: ''
+          from: '',
+          ticket: '',
+          nowPrice: '',
+          underlinePrice: '',
+          otherPrice: '',
+          info: '',
+          url: '',
+          category: ''
         },
         dialogId: null,
         pageNum: 1,
@@ -168,8 +178,13 @@
     created () {
       this.initCol()
       this.onSearch()
+      this.fetchData()
     },
     methods: {
+      async fetchData () {
+        let res = await this.$http.get('/rest/category')
+        this.categories = [...res.data]
+      },
       initCol () {
         this.columns = [
           { label: '商品名称', prop: 'name', sortable: true, fixed: true },
@@ -190,7 +205,7 @@
         this.onSearch()
       },
       async onSearch () {
-        const res = await this.$http.post('/photo/photo/page/list', {
+        const res = await this.$http.post('/page/good/good/pageList', {
           pageNum: this.pageNum,
           pageSize: this.pageSize,
           name: this.formInline.name,
@@ -234,7 +249,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(async () => {
-          await this.$http.delete(`/rest/photo/${row._id}`)
+          await this.$http.delete(`/rest/good/${row._id}`)
           this.$message({
             type: 'success',
             message: '删除成功!'
@@ -267,9 +282,9 @@
       },
       async submitForm (formName) {
         if (this.dialogId) {
-          await this.$http.put(`/rest/photo/${this.dialogId}`, this.dialogForm)
+          await this.$http.put(`/rest/good/${this.dialogId}`, this.dialogForm)
         } else {
-          await this.$http.post('/rest/photo', this.dialogForm)
+          await this.$http.post('/rest/good', this.dialogForm)
         }
         this.$message({
           type: 'success',
@@ -286,6 +301,9 @@
   }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+  /deep/ .el-dialog__body {
+    max-height: 400px !important;
+    overflow-y: scroll;
+  }
 </style>

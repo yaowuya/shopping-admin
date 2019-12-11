@@ -139,7 +139,7 @@
         this.onSearch()
       },
       async onSearch () {
-        const res = await this.$http.post('/photo/photo/page/list', {
+        const res = await this.$http.post('/page/photo/photo/pageList', {
           pageNum: this.pageNum,
           pageSize: this.pageSize,
           name: this.formInline.name,
