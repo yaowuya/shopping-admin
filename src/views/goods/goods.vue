@@ -24,8 +24,9 @@
       <el-table-column
         slot="picture"
         prop="icon"
+        align="center"
         label="广告图"
-        width="300"
+        width="200"
       >
         <template slot-scope="scope">
           <img :src="scope.row.icon" style="height:50px;">
@@ -189,6 +190,7 @@
         this.columns = [
           { label: '商品名称', prop: 'name', sortable: true, fixed: true },
           { slot: 'picture' },
+          { label: '商品分类', prop: 'category.name' },
           { label: '商品信息', prop: 'info', width: '200' },
           { label: '商品来源', prop: 'from' },
           { label: '领券', prop: 'ticket' },
@@ -240,11 +242,12 @@
         this.empty()
         this.$nextTick(() => {
           this.dialogForm = Object.assign({}, row)
+          this.dialogForm.category = row.category._id
           this.empty('ruleForm')
         })
       },
       handleDelete (index, row) {
-        this.$confirm(`是否确定要删除分类 "${row.name}"`, '提示', {
+        this.$confirm(`是否确定要删除商品 "${row.name}"`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'

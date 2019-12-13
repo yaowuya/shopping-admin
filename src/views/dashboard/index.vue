@@ -178,7 +178,7 @@
         })
       },
       handleDelete (index, row) {
-        this.$confirm(`是否确定要删除分类 "${row.name}"`, '提示', {
+        this.$confirm(`是否确定要删除广告 "${row.name}"`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'

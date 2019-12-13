@@ -4,7 +4,7 @@ import { Message } from 'element-ui'
 import { getToken } from './utils/auth'
 
 const http = axios.create({
-  baseURL: 'http://localhost:3000/admin/api' || '/admin/api',
+  baseURL: process.env.VUE_APP_API_URL || '/admin/api',
   timeout: 60000
 })
 
