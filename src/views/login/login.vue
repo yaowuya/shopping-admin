@@ -118,7 +118,6 @@
               this.setAllToken(res.token)
               await this.login(this.loginForm.username)
               // this.SET_NAME(this.loginForm.username)
-              console.log('login', res)
               this.$router.push({ path: '/' })
               this.$message({
                 type: 'success',
@@ -129,7 +128,6 @@
               this.loading = false
             }
           } else {
-            console.log('error submit!!')
             return false
           }
         })

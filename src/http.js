@@ -21,7 +21,7 @@ http.interceptors.request.use(function (config) {
 })
 
 http.interceptors.response.use(res => {
-  return res
+  return res.data
 }, err => {
   console.log('error:', err)
   if (err.response.data.message) {

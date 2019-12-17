@@ -27,6 +27,11 @@
           min-width="120">
         </el-table-column>
         <el-table-column
+          prop="order"
+          label="排序"
+          min-width="120">
+        </el-table-column>
+        <el-table-column
           prop="admin"
           label="管理员"
           min-width="120">
@@ -75,6 +80,10 @@
         <el-form-item label="分类名称" prop="name">
           <el-input v-model="dialogForm.name"></el-input>
         </el-form-item>
+        <el-form-item label="排序" prop="order">
+          <!--          <el-input v-model="dialogForm.order"></el-input>-->
+          <el-input-number v-model="dialogForm.order" :min="1"></el-input-number>
+        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="resetForm('ruleForm')">取 消</el-button>
@@ -105,12 +114,16 @@
         dialogVisible: false,
         dialogForm: {
           name: '',
+          order: 1,
           admin: ''
         },
         dialogId: null,
         rules: {
           name: [
             { required: true, message: '请输入分类名称', trigger: 'blur' }
+          ],
+          order: [
+            { required: true, message: '请输入序列号', trigger: 'blur' }
           ]
         },
         parents: [],
@@ -191,19 +204,17 @@
           pageSize: this.pageSize,
           name: this.formInline.name
         })
-        this.tableData = res.data.data
-        this.total = res.data.count
+        this.tableData = res.data
+        this.total = res.count
       },
       submitForm (formName) {
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
-            let res = null
             if (this.dialogId) {
-              res = await this.$http.put(`/rest/category/${this.dialogId}`, this.dialogForm)
+              await this.$http.put(`/rest/category/${this.dialogId}`, this.dialogForm)
             } else {
-              res = await this.$http.post('/rest/category', this.dialogForm)
+              await this.$http.post('/rest/category', this.dialogForm)
             }
-            console.log(res)
           } else {
             this.$message({
               type: 'error',

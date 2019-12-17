@@ -5,6 +5,16 @@
         <el-form-item label="名称">
           <el-input v-model="formInline.name" placeholder="名称"></el-input>
         </el-form-item>
+        <el-form-item label="分类">
+          <el-select v-model="formInline.category"  multiple>
+            <el-option
+              v-for="item of categories"
+              :key="item._id"
+              :label="item.name"
+              :value="item._id"
+            ></el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="queryAd">查询</el-button>
         </el-form-item>
@@ -82,9 +92,6 @@
             <el-form-item label="商品来源" prop="from">
               <el-input v-model="dialogForm.from"></el-input>
             </el-form-item>
-            <el-form-item label="领券" prop="ticket">
-              <el-input v-model="dialogForm.ticket"></el-input>
-            </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
@@ -149,7 +156,8 @@
         tableData: [],
         columns: [],
         formInline: {
-          name: ''
+          name: '',
+          category: []
         },
         ads: [],
         textMap: {
@@ -183,8 +191,8 @@
     },
     methods: {
       async fetchData () {
-        let res = await this.$http.get('/rest/category')
-        this.categories = [...res.data]
+        const res = await this.$http.get('/rest/category')
+        this.categories = [...res]
       },
       initCol () {
         this.columns = [
@@ -193,7 +201,6 @@
           { label: '商品分类', prop: 'category.name' },
           { label: '商品信息', prop: 'info', width: '200' },
           { label: '商品来源', prop: 'from' },
-          { label: '领券', prop: 'ticket' },
           { label: '现在价格', prop: 'nowPrice' },
           { label: '划线价格', prop: 'underlinePrice' },
           { label: '其他价格', prop: 'otherPrice' },
@@ -211,11 +218,11 @@
           pageNum: this.pageNum,
           pageSize: this.pageSize,
           name: this.formInline.name,
+          category: this.formInline.category,
           sort: { 'order': 1 }
         })
-        let resData = res.data
-        this.tableData = resData.data
-        this.total = resData.count
+        this.tableData = res.data
+        this.total = res.count
         // console.log('onSearch', res)
       },
       afterUpload (res) {

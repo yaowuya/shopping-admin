@@ -145,9 +145,8 @@
           name: this.formInline.name,
           sort: { 'order': 1 }
         })
-        let resData = res.data
-        this.tableData = resData.data
-        this.total = resData.count
+        this.tableData = res.data
+        this.total = res.count
         // console.log('onSearch', res)
       },
       afterUpload (res) {

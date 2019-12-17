@@ -94,7 +94,6 @@
           if (valid) {
             // this.loading = true;
             const res = await getInfo(this.registerForm.username)
-            console.log(res)
             if (res != null && res.username === this.registerForm.username) {
               this.$message({
                 type: 'false',
