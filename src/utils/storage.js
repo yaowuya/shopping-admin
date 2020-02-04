@@ -1,13 +1,5 @@
 // 页面类型
-export const FEATURED_PAGE = 'FEATURED'
-export const HOME_PAGE = 'HOMEPAGE'// 主页
-export const SHELF_PAGE = 'SHELF'// 书架
-export const RANK_PAGE = 'RANK'
-export const CATEGORY_PAGE = 'CATEGORY'
-export const BOOK_PAGE = 'BOOK'
-
-// 图片根路径
-export const staticPath = 'http://statics.zhuishushenqi.com'
+export const MENU_ROUTE = 'MENU'
 
 // 存储localStorage时设置前缀
 const storePrefix = 'RM_'

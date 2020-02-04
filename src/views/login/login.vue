@@ -51,18 +51,18 @@
 
 <script>
   import { mapMutations, mapActions } from 'vuex'
-  import { validUsername } from '../../utils/validate'
+  // import { validUsername } from '../../utils/validate'
 
   export default {
     name: 'login',
     data () {
-      const validateUsername = (rule, value, callback) => {
-        if (!validUsername(value)) {
-          callback(new Error('Please enter the correct user name'))
-        } else {
-          callback()
-        }
-      }
+      // const validateUsername = (rule, value, callback) => {
+      //   if (!validUsername(value)) {
+      //     callback(new Error('Please enter the correct user name'))
+      //   } else {
+      //     callback()
+      //   }
+      // }
       const validatePassword = (rule, value, callback) => {
         if (value.length < 6) {
           callback(new Error('The password can not be less than 6 digits'))
@@ -76,7 +76,7 @@
           password: '123456'
         },
         loginRules: {
-          username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+          username: [{ required: true, trigger: 'blur' }],
           password: [{ required: true, trigger: 'blur', validator: validatePassword }]
         },
         loading: false,
@@ -98,7 +98,8 @@
       ]),
       ...mapActions('user', [
         'setAllToken',
-        'login'
+        'login',
+        'getMenu'
       ]),
       showPwd () {
         if (this.passwordType === 'password') {
@@ -117,7 +118,7 @@
               const res = await this.$http.post('login', this.loginForm)
               this.setAllToken(res.token)
               await this.login(this.loginForm.username)
-              // this.SET_NAME(this.loginForm.username)
+              // await this.getMenu()
               this.$router.push({ path: '/' })
               this.$message({
                 type: 'success',

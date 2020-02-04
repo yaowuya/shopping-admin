@@ -4,8 +4,28 @@
   </div>
 </template>
 
-<style lang="scss">
-</style>
+<!--<script>-->
+<!--  import { mapActions } from 'vuex'-->
+<!--  import { getToken } from '@/utils/auth'-->
 
-<style lang="scss">
+<!--  export default {-->
+<!--    name: 'app',-->
+<!--    created () {-->
+<!--      const hasToken = getToken()-->
+<!--      if (hasToken) {-->
+<!--        if (this.$route.path !== '/login') {-->
+<!--          this.getMenu()-->
+<!--        } else {-->
+<!--          this.$router.replace('/login')-->
+<!--        }-->
+<!--      }-->
+<!--    },-->
+<!--    methods: {-->
+<!--      ...mapActions('user', [-->
+<!--        'getMenu'-->
+<!--      ])-->
+<!--    }-->
+<!--  }-->
+<!--</script>-->
+<style lang="scss" scoped>
 </style>

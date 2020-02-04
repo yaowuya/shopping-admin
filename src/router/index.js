@@ -50,49 +50,81 @@ export const constantRoutes = [
   },
   {
     path: '/',
-    component: Layout,
+    component: () => import('@/layout'),
     redirect: '/dashboard',
     children: [{
       path: 'dashboard',
       name: 'Dashboard',
-      component: () => import('@/views/dashboard/index'),
+      component: () => import('@/views/dashboard/dashboard'),
       meta: { title: '首页', icon: 'dashboard' }
     }]
-  }, {
+  }
+]
+
+/**
+ * asyncRoutes
+ * the routes that need to be dynamically loaded based on user roles
+ */
+export const asyncRoutes = [
+  {
     path: '/good',
     component: Layout,
     redirect: '/good/category',
     name: 'Good',
-    meta: { title: '商品', icon: 'example' },
+    meta: { title: '商品管理', icon: 'example' },
     children: [
       {
         path: '/category',
         name: 'category',
-        component: () => import('@/views/category/category'),
-        meta: { title: '分类', icon: 'example' }
+        component: () => import('@/views/goods/category'),
+        meta: { title: '商品分类' }
       },
       {
         path: '/goods',
         name: 'goods',
         component: () => import('@/views/goods/goods'),
-        meta: { title: '商品列表', icon: 'example' }
+        meta: { title: '商品列表' }
       }
     ]
-  },
-  // {
-  //   path: '/category',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: '',
-  //       name: 'category',
-  //       component: () => import('@/views/category/category'),
-  //       meta: { title: '分类列表', icon: 'example' }
-  //     }
-  //   ]
-  // },
-  // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  }, {
+    path: '/auth',
+    component: Layout,
+    redirect: '/auth/user',
+    name: 'Auth',
+    meta: { title: '权限管理', icon: 'lock' },
+    children: [
+      {
+        path: '/user',
+        name: 'user',
+        component: () => import('@/views/user/user'),
+        meta: { title: '用户管理' }
+      },
+      {
+        path: '/role',
+        name: 'role',
+        component: () => import('@/views/user/role'),
+        meta: { title: '角色管理' }
+      },
+      {
+        path: '/menus',
+        name: 'menus',
+        component: () => import('@/views/user/menus'),
+        meta: { title: '菜单管理' }
+      },
+      {
+        path: '/userrole',
+        name: 'userrole',
+        component: () => import('@/views/user/userrole'),
+        meta: { title: '用户角色管理' }
+      },
+      {
+        path: '/rolemenu',
+        name: 'rolemenu',
+        component: () => import('@/views/user/rolemenu'),
+        meta: { title: '角色菜单管理' }
+      }
+    ]
+  }
 ]
 
 const createRouter = () => new Router({

@@ -7,6 +7,7 @@
     background-color: $color !important;
   }
 }
+
 // text align
 @each $var in (left, center, right) {
   .text-#{$var} {
@@ -15,9 +16,9 @@
 }
 
 //float
-@each $var in (left,right){
-  .f-#{$var}{
-    float:$var;
+@each $var in (left, right) {
+  .f-#{$var} {
+    float: $var;
   }
 }
 
@@ -50,6 +51,6 @@
   }
 }
 
-.display-none{
+.display-none {
   display: none;
 }
